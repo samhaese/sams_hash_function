@@ -1,5 +1,17 @@
 from typing import Iterable
+from types import ModuleType
 from hashlib import sha256
+import importlib
+import os
+
+def _import(name, package=None) -> ModuleType:
+    """
+    This method is unfinished.  The goal is to support these three expectations:
+    - encoders can reference imported modules
+    - an encoder is never called before its required modules are already in sys.modules
+    - importing a module with an encoder that requires module A does not import module A
+    """
+    return importlib.import_module(name, package=package)
 
 
 def int_to_bytes(token: int) -> bytes:
@@ -22,6 +34,7 @@ def int_to_bytes(token: int) -> bytes:
     int_array[-1] = int_array[-1] | 128
 
     return bytes(int_array)
+
 
 def add_bytes(*_bytes) -> bytes:
     """
@@ -62,3 +75,14 @@ def hash_unordered_iterable(_iterable: Iterable):
     hashes = (shash(item) for item in _iterable)
     return shash(add_bytes(*hashes))
 
+
+def hash_file(filepath: os.PathLike) -> bytes:
+    h = sha256()
+    BUFFERSIZE = 65536
+    with open(filepath, 'rb') as f:
+        while True:
+            data = f.read(BUFFERSIZE)
+            if not data:
+                break
+            h.update(data)
+    return h.digest()
