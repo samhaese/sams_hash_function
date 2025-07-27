@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sams_hash_function"
+version = "0.0.1"
+authors = [
+  { name="Sam Haese", email="sam.d.haese@gmail.com" },
+]
+description = "Generate object hashes consistent between Python sessions"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICENSE"]
+
+[project.urls]
+Homepage = "https://github.com/samhaese/sams_hash_function"
+Issues = "https://github.com/samhaese/sams_hash_function/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["shf"]
